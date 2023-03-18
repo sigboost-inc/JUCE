@@ -1180,6 +1180,12 @@ int LookAndFeel_V2::getPopupMenuColumnSeparatorWidthWithOptions (const PopupMenu
     return 0;
 }
 
+Point<int> LookAndFeel_V2::getPopupMenuItemPositionOffset (const PopupMenu::Options&)
+{
+    return Point<int>{0, 0};
+}
+
+
 //==============================================================================
 void LookAndFeel_V2::fillTextEditorBackground (Graphics& g, int /*width*/, int /*height*/, TextEditor& textEditor)
 {

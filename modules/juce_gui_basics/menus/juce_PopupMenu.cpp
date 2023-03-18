@@ -1149,8 +1149,8 @@ struct MenuWindow  : public Component
                               - (childYOffset + (getY() - windowPos.getY()));
 
         auto col = 0;
-        auto x = 0;
-        auto y = initialY;
+        auto x = getLookAndFeel().getPopupMenuItemPositionOffset(options).getX();
+        auto y = initialY + getLookAndFeel().getPopupMenuItemPositionOffset(options).getY();;
 
         for (const auto& item : items)
         {

@@ -1146,11 +1146,11 @@ struct MenuWindow  : public Component
     {
         const auto separatorWidth = getLookAndFeel().getPopupMenuColumnSeparatorWidthWithOptions (options);
         const auto initialY = getLookAndFeel().getPopupMenuBorderSizeWithOptions (options)
-                              - (childYOffset + (getY() - windowPos.getY()));
+                              - (childYOffset + (getY() - windowPos.getY())) + getLookAndFeel().getPopupMenuItemPositionOffset(options).getY();
 
         auto col = 0;
         auto x = getLookAndFeel().getPopupMenuItemPositionOffset(options).getX();
-        auto y = initialY + getLookAndFeel().getPopupMenuItemPositionOffset(options).getY();;
+        auto y = initialY;
 
         for (const auto& item : items)
         {

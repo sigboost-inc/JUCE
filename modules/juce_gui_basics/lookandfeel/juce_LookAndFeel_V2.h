@@ -217,7 +217,7 @@ public:
 
     int getPopupMenuBorderSizeWithOptions (const PopupMenu::Options&) override;
 
-    Point<int> LookAndFeel_V2::getPopupMenuItemPositionOffset (const PopupMenu::Options&) override;
+    Point<int> getPopupMenuItemPositionOffset (const PopupMenu::Options&) override;
 
     void drawPopupMenuColumnSeparatorWithOptions (Graphics& g,
                                                   const Rectangle<int>& bounds,

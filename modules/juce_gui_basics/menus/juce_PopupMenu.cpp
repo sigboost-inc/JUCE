@@ -1009,7 +1009,7 @@ struct MenuWindow final : public Component
             const auto columnEnd = nextBreak == end ? end : std::next (nextBreak);
 
             const auto getMaxWidth = [] (int acc, const ItemComponent* item) { return jmax (acc, item->getWidth()); };
-            const auto colW = std::accumulate (it, columnEnd, options.getStandardItemHeight(), getMaxWidth);
+            const auto colW = std::accumulate (it, columnEnd, 0 /* options.getStandardItemHeight() */, getMaxWidth); // Why use Default Height for width calculation?
             const auto adjustedColW = jmin (maxMenuW / jmax (1, numColumns - 2),
                                             colW + getLookAndFeel().getPopupMenuBorderSizeWithOptions (options) * 2);
 
@@ -1147,10 +1147,10 @@ struct MenuWindow final : public Component
     {
         const auto separatorWidth = getLookAndFeel().getPopupMenuColumnSeparatorWidthWithOptions (options);
         const auto initialY = getLookAndFeel().getPopupMenuBorderSizeWithOptions (options)
-                              - (childYOffset + (getY() - windowPos.getY()));
+                              - (childYOffset + (getY() - windowPos.getY())) + getLookAndFeel().getPopupMenuItemPositionOffset(options).getY();
 
         auto col = 0;
-        auto x = 0;
+        auto x = getLookAndFeel().getPopupMenuItemPositionOffset(options).getX();
         auto y = initialY;
 
         for (const auto& item : items)

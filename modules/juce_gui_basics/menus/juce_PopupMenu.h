@@ -1021,6 +1021,8 @@ public:
 
         virtual int getPopupMenuBorderSizeWithOptions (const Options&) = 0;
 
+        virtual Point<int> getPopupMenuItemPositionOffset (const Options&) = 0;
+
         /** Implement this to draw some custom decoration between the columns of the popup menu.
 
             `getPopupMenuColumnSeparatorWidthWithOptions` must return a positive value in order

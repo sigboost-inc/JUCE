@@ -603,6 +603,7 @@ struct MenuWindow final : public Component
         else {
             return false;
         }
+        return true;
     }
 
     void inputAttemptWhenModal() override

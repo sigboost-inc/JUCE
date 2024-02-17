@@ -591,10 +591,18 @@ struct MenuWindow final : public Component
     }
 
     //==============================================================================
-    bool keyPressed (const KeyPress&) override
+    bool keyPressed (const KeyPress& key) override
     {
-        // We do not need key press event.
-        return false;
+        // We do not need key press event for arrow keys.
+        if (key.isKeyCode(KeyPress::returnKey) || key.isKeyCode(KeyPress::spaceKey)) {
+            triggerCurrentlyHighlightedItem();
+        }
+        else if (key.isKeyCode(KeyPress::escapeKey)) {
+            dismissMenu(nullptr);
+        }
+        else {
+            return false;
+        }
     }
 
     void inputAttemptWhenModal() override

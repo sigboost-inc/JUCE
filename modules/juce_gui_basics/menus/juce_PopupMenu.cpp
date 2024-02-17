@@ -593,60 +593,16 @@ struct MenuWindow final : public Component
     //==============================================================================
     bool keyPressed (const KeyPress& key) override
     {
-        if (key.isKeyCode (KeyPress::downKey))
-        {
-            selectNextItem (MenuSelectionDirection::forwards);
-        }
-        else if (key.isKeyCode (KeyPress::upKey))
-        {
-            selectNextItem (MenuSelectionDirection::backwards);
-        }
-        else if (key.isKeyCode (KeyPress::leftKey))
-        {
-            if (parent != nullptr)
-            {
-                Component::SafePointer<MenuWindow> parentWindow (parent);
-                ItemComponent* currentChildOfParent = parentWindow->currentChild;
-
-                hide (nullptr, true);
-
-                if (parentWindow != nullptr)
-                    parentWindow->setCurrentlyHighlightedChild (currentChildOfParent);
-
-                disableTimerUntilMouseMoves();
-            }
-            else if (componentAttachedTo != nullptr)
-            {
-                componentAttachedTo->keyPressed (key);
-            }
-        }
-        else if (key.isKeyCode (KeyPress::rightKey))
-        {
-            disableTimerUntilMouseMoves();
-
-            if (showSubMenuFor (currentChild))
-            {
-                if (isSubMenuVisible())
-                    activeSubMenu->selectNextItem (MenuSelectionDirection::current);
-            }
-            else if (componentAttachedTo != nullptr)
-            {
-                componentAttachedTo->keyPressed (key);
-            }
-        }
-        else if (key.isKeyCode (KeyPress::returnKey) || key.isKeyCode (KeyPress::spaceKey))
-        {
+        // We do not need key press event for arrow keys.
+        if (key.isKeyCode(KeyPress::returnKey) || key.isKeyCode(KeyPress::spaceKey)) {
             triggerCurrentlyHighlightedItem();
         }
-        else if (key.isKeyCode (KeyPress::escapeKey))
-        {
-            dismissMenu (nullptr);
+        else if (key.isKeyCode(KeyPress::escapeKey)) {
+            dismissMenu(nullptr);
         }
-        else
-        {
+        else {
             return false;
         }
-
         return true;
     }
 
@@ -699,9 +655,9 @@ struct MenuWindow final : public Component
     void mouseDrag  (const MouseEvent& e) override    { handleMouseEvent (e); }
     void mouseUp    (const MouseEvent& e) override    { handleMouseEvent (e); }
 
-    void mouseWheelMove (const MouseEvent&, const MouseWheelDetails& wheel) override
+    void mouseWheelMove (const MouseEvent&, const MouseWheelDetails&) override
     {
-        alterChildYPos (roundToInt (-10.0f * wheel.deltaY * PopupMenuSettings::scrollZone));
+        // We do not need mouse wheel event
     }
 
     void handleMouseEvent (const MouseEvent& e)

@@ -196,16 +196,14 @@ public:
     //==============================================================================
     void reset()
     {
-        const ScopedLock sl { lock };
-        cache = {};
+        cache.clear();
     }
 
     const auto& get (const Font& font, const int glyphNumber)
     {
-        const ScopedLock sl { lock };
         return cache.get (Key { font, glyphNumber }, [] (const auto& key)
         {
-            auto fontHeight = key.font.getHeight();
+            auto fontHeight = detail::FontRendering::getEffectiveHeight (key.font);
             auto typeface = key.font.getTypefacePtr();
             return typeface->getLayersForGlyph (key.font.getMetricsKind(),
                                                 key.glyph,
@@ -233,7 +231,6 @@ private:
     };
 
     LruCache<Key, std::vector<GlyphLayer>> cache;
-    CriticalSection lock;
 
     static GlyphCache*& getSingletonPointer() noexcept
     {
@@ -2663,7 +2660,7 @@ protected:
                 return std::tuple (cache.get (f, i), drawPos);
             }
 
-            const auto fontHeight = stack->font.getHeight();
+            const auto fontHeight = detail::FontRendering::getEffectiveHeight (stack->font);
             const auto fontTransform = AffineTransform::scale (fontHeight * stack->font.getHorizontalScale(),
                                                                fontHeight).followedBy (t);
             const auto fullTransform = stack->transform.getTransformWith (fontTransform);

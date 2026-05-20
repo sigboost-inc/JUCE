@@ -126,17 +126,23 @@ private:
                 return;
 
             const auto now = Time::getMillisecondCounter();
-            const auto event = *pendingMessages.begin();
-            pendingMessages.erase (pendingMessages.begin());
+            const auto firstIt = pendingMessages.begin();
+            const auto event = *firstIt;
 
             const auto timestamp = event.getTimeStamp();
 
             if (timestamp > now + 20)
             {
+                // Bugfix (sigboost-inc/JUCE): the original JUCE 8 implementation erases
+                // the front event before this wait, so events that happen to be more than
+                // 20ms ahead get silently dropped on `continue`. Keep the event in the
+                // multiset while we wait, and only erase it once we are committed to firing.
                 const auto millis = static_cast<int64_t> (timestamp - (now + 20));
                 condvar.wait_for (lock, std::chrono::milliseconds (millis));
                 continue;
             }
+
+            pendingMessages.erase (firstIt);
 
             if (timestamp > now)
                 Time::waitForMillisecondCounter ((uint32) timestamp);
